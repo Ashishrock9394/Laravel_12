@@ -14,6 +14,11 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
+    @if (session()->has('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@endif
 
     <!-- Navbar -->
     @include('layouts.partials.navbar')
@@ -36,5 +41,49 @@
 <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('logout-btn')?.addEventListener('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure you want to logout?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    });
+</script>
+
+<script>
+    window.addEventListener('swal:success', event => {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: event.detail.message,
+            showConfirmButton: false,
+            timer: 2000,
+        });
+    });
+
+    window.addEventListener('swal:error', event => {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: event.detail.message,
+            showConfirmButton: false,
+            timer: 2000,
+        });
+    });
+</script>
+
+
 </body>
 </html>

@@ -24,8 +24,18 @@ class AdminController extends Controller
     public function users()
     {
         return view('admin.users');
-        // $users = User::where('parent_id', auth()->id())->get();
-        // return view('admin.users', compact('users'));
+    }
+    public function tickets()
+    {
+        return view('admin.tickets');
+    }
+    public function queries()
+    {
+        return view('admin.queries');
+    }   
+    public function contacts()
+    {
+        return view('admin.contacts');
     }
     
 }

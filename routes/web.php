@@ -1,18 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SuperadminController;
-use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsSuperadmin;   
 
+// Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-// Guest routes
+// Guest Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [UserController::class, 'loginPage'])->name('login');
     Route::post('/login', [UserController::class, 'login'])->name('login.submit');
@@ -24,11 +22,12 @@ Route::middleware('guest')->group(function () {
 // Logout
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-// Protected routes
+// Authenticated Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('user.dashboard');
-    
-    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('user.dashboard');
+
+    // Admin routes
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/users', [AdminController::class, 'users'])->name('users.index');
         Route::get('/tickets', [AdminController::class, 'tickets'])->name('tickets.index');
@@ -36,8 +35,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/contacts', [AdminController::class, 'contacts'])->name('contacts.index');
     });
 
-
-    Route::middleware('superadmin')->group(function () {
-        Route::get('/superadmin/dashboard', [SuperadminController::class, 'dashboard'])->name('superadmin.dashboard');
+    // Superadmin routes
+    Route::middleware('superadmin')->prefix('superadmin')->name('superadmin.')->group(function () {
+        Route::get('/dashboard', [SuperadminController::class, 'dashboard'])->name('dashboard');
     });
 });

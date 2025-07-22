@@ -71,7 +71,7 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'You have been logged out successfully.');
+        return redirect('/')->with('success', 'You have been logged out successfully.');
     }
 
     private function redirectByUserType($type, $context = 'login')
