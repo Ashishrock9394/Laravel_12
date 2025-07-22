@@ -32,32 +32,24 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="/">Home</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
 
                 <!-- Dropdown Example -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Dropdown</a>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Ticket</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        @if (Auth::check())
+                            <li><a class="dropdown-item" href="{{ route('user.create-ticket') }}">Create Ticket</a></li>    
+                            <li><a class="dropdown-item" href="{{route('user.view-tickets')}}">View Tickets</a></li>
+                        @else
+                            <li><a class="dropdown-item" href="{{ route('login') }}">Create Ticket</a></li>
+                        @endif
                     </ul>
                 </li>
-
-                <!-- Duplicate Dropdown - Rename or remove -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Dropdown</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item"><a class="nav-link" href="#">Another Link</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Another Link</a></li>
+                
+                
+                <li class="nav-item"><a class="nav-link" href="#">Query</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
             </ul>
 
             <!-- Search and Auth Icons -->
@@ -76,7 +68,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
-                              <button class="dropdown-item" onclick="location.href='#'">
+                              <button class="dropdown-item" onclick="location.href='{{route ('user.profile')}}'">
                                     <i class="fa-solid fa-id-badge me-1 fs-6"></i> Profile
                                 </button>
                             </li>

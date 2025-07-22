@@ -25,6 +25,10 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/profile', [UserController::class, 'userProfile'])->name('user.profile');
+    Route::get('/create-ticket', [UserController::class, 'createTicketPage'])->name('user.create-ticket');
+    Route::post('/create-ticket', [UserController::class, 'createTicket'])->name('user.create-ticket');
+    Route::get('/view-tickets', [UserController::class, 'viewTickets'])->name('user.view-tickets');
 
     // Admin routes
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {

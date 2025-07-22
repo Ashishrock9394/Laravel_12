@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User; 
+use App\Models\Ticket;
+use App\Models\Contact;
+use App\Models\Query;
 
 class UserController extends Controller
 {
@@ -84,4 +88,39 @@ class UserController extends Controller
             default      => redirect()->route('user.dashboard')->with('success', $message),
         };
     }
+    public function userProfile()
+    {
+        $user = Auth::user();
+        return view('user.profile', compact('user'));
+    }
+
+    public function createTicketPage()
+    {
+        return view('user.create-ticket');
+    }
+
+    public function createTicket(Request $request)
+    {   
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+        $ticket = new Ticket();
+        $ticket->user_id = Auth::id();
+        $ticket->subject = $request->subject;
+        $ticket->message = $request->message;
+        $ticket->status = 'open';   
+
+        $ticket->save();
+        // Logic to create a ticket
+        // This is just a placeholder for the actual implementation
+        return redirect('/view-tickets')->with('success', 'Ticket created successfully.');
+    }   
+
+    public function viewTickets()
+    {
+        $tickets = Ticket::where('user_id', Auth::id())->get();
+        return view('user.view-tickets', compact('tickets'));
+    }
+
 }

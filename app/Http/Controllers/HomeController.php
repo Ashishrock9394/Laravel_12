@@ -23,6 +23,11 @@ class HomeController extends Controller
         return view('home'); // Public home page
     }
 
+    public function dashboard()
+    {
+        return view('home'); // <-- create this view or change path
+    }
+
     public function about()
     {
         return view('about'); // About page
