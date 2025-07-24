@@ -25,6 +25,52 @@
  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- jQuery  CDN (optional) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- CSRF for AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        function fetchNotifications() {
+            $.get("{{ route('notifications.fetch') }}").done(function (data)  {
+                let list = '';
+                if (data.notifications.length > 0) {
+                    $('#notification-count').text(data.count).show();
+                    data.notifications.forEach(n => {
+                        list += `<li>
+                            <a class="dropdown-item" href="/tickets/${n.data.ticket_id}" onclick="markNotificationsRead()">
+                                Your ticked id: ${n.data.ticket_id} has been ${n.data.message}
+                            </a>
+                        </li>`;
+                    });
+                } else {
+                    $('#notification-count').hide();
+                    list = '<li><span class="dropdown-item">No new notifications</span></li>';
+                }
+                $('#notification-list').html(list);
+            }).fail(function (xhr, status, error) {
+                console.error("Notification fetch failed:", xhr.responseText);
+            });
+        }
+
+        function markNotificationsRead() {
+            $.post("{{ route('notifications.markAsRead') }}", {}, function () {
+                $('#notification-count').hide();
+            });
+        }
+
+        // Poll every 10s
+        setInterval(fetchNotifications, 10000);
+        fetchNotifications(); // Initial call
+    </script>
 
 <script>
     document.getElementById('logout-btn')?.addEventListener('click', function (e) {

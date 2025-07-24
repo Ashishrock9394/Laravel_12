@@ -13,13 +13,19 @@ class AdminController extends Controller
     //
     public function dashboard()
     {
-        return view('admin.dashboard', [
-            'userCount' => User::where('parent_id', auth()->id())->count(),
-            'ticketCount' => Ticket::where('assigned_to', auth()->id())->count(),
-            'queryCount' => Query::where('admin_id', auth()->id())->count(),
-            'contactCount' => Contact::where('admin_id', auth()->id())->count(),
-        ]);
+        $adminId = auth()->id(); 
 
+        return view('admin.dashboard', [
+            'userCount' => User::where('parent_id', $adminId)->count(),
+            'ticketCount' => Ticket::where('assigned_to', $adminId)->count(),
+            'queryCount' => Query::where('admin_id', $adminId)->count(),
+
+            'contactCount' => Contact::whereIn('user_id', function ($query) use ($adminId) {
+                $query->select('id')
+                    ->from('users')
+                    ->where('parent_id', $adminId);
+            })->count(),
+        ]);
     }
     public function users()
     {

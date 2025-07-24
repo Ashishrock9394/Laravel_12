@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Notifications\TicketUpdated;
 
 class TicketTable extends Component
 {
@@ -15,13 +16,16 @@ class TicketTable extends Component
 
     public function updateStatus($ticketId, $newStatus)
     {
-        $ticket = \App\Models\Ticket::find($ticketId);
+        $ticket = Ticket::find($ticketId);
 
         if ($ticket) {
             $ticket->status = $newStatus;
             $ticket->save();
 
-            // ✅ Livewire v3 browser event
+            // ✅ Send notification to the ticket owner
+            $ticket->user->notify(new TicketUpdated($ticket));
+
+            // ✅ Livewire browser event for feedback
             $this->dispatch('swal:success', message: 'Ticket status updated successfully.');
         } else {
             $this->dispatch('swal:error', message: 'Ticket not found.');

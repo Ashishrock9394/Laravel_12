@@ -60,18 +60,19 @@
     <h2 class="text-center mb-4">Contact Us</h2>
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <form>
+        <form action="{{ route('contact.store') }}" method="POST">
+          @csrf
           <div class="mb-3">
             <label for="contactName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="contactName" placeholder="Your Name">
+            <input type="text" class="form-control" name="contactName" id="contactName" placeholder="Your Name">
           </div>
           <div class="mb-3">
             <label for="contactEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="contactEmail" placeholder="Your Email">
+            <input type="email" class="form-control" name="contactEmail" id="contactEmail" placeholder="Your Email">
           </div>
           <div class="mb-3">
             <label for="contactMessage" class="form-label">Message</label>
-            <textarea class="form-control" id="contactMessage" rows="5" placeholder="Your Message"></textarea>
+            <textarea class="form-control" name="contactMessage" id="contactMessage" rows="5" placeholder="Your Message"></textarea>
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary px-5">Send Message</button>

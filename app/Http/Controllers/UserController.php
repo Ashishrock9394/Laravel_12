@@ -123,4 +123,28 @@ class UserController extends Controller
         return view('user.view-tickets', compact('tickets'));
     }
 
+    public function contactStore(Request $request){
+
+        if(!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to contact us.');
+        }
+
+        $request->validate([
+            'contactName' => 'required|string|max:255',
+            'contactEmail' => 'required|email|max:255',
+            'contactMessage' => 'required|string',
+        ]);
+
+        $contact = new Contact();
+        $contact->user_id = Auth::id();
+        $contact->name = $request->contactName;
+        $contact->email = $request->contactEmail;
+        $contact->message = $request->contactMessage;
+
+        $contact->save();
+
+        return redirect()->back()->with('success', 'Your message has been sent successfully.');
+
+    }
+
 }

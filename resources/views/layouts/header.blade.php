@@ -26,7 +26,6 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navbar Links -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
@@ -34,22 +33,33 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#">About</a></li>
 
-                <!-- Dropdown Example -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Ticket</a>
                     <ul class="dropdown-menu">
                         @if (Auth::check())
-                            <li><a class="dropdown-item" href="{{ route('user.create-ticket') }}">Create Ticket</a></li>    
-                            <li><a class="dropdown-item" href="{{route('user.view-tickets')}}">View Tickets</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.create-ticket') }}">Create Ticket</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.view-tickets') }}">View Tickets</a></li>
                         @else
                             <li><a class="dropdown-item" href="{{ route('login') }}">Create Ticket</a></li>
                         @endif
                     </ul>
                 </li>
-                
-                
+
                 <li class="nav-item"><a class="nav-link" href="#">Query</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+
+                <!-- Notification Bell -->
+                @if (Auth::check())
+                    <li class="nav-item dropdown" id="notificationDropdown">
+                        <a class="nav-link fs-7" data-bs-toggle="dropdown" href="#">
+                            🔔
+                            <span class="badge bg-danger" id="notification-count" style="display: none;"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" id="notification-list">
+                            <li><span class="dropdown-item fs-6">Loading...</span></li>
+                        </ul>
+                    </li>
+                @endif
             </ul>
 
             <!-- Search and Auth Icons -->
@@ -68,7 +78,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
-                              <button class="dropdown-item" onclick="location.href='{{route ('user.profile')}}'">
+                                <button class="dropdown-item" onclick="location.href='{{ route('user.profile') }}'">
                                     <i class="fa-solid fa-id-badge me-1 fs-6"></i> Profile
                                 </button>
                             </li>
