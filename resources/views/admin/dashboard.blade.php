@@ -7,7 +7,7 @@
     <!-- Page header -->
     <div class="content-header">
         <div class="container-fluid">
-            <h1 class="m-0">Admin Dashboard hai ye</h1>
+            <h1 class="m-0">Admin Dashboard</h1>
         </div>
     </div>
 
