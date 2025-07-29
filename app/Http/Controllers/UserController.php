@@ -10,19 +10,17 @@ use App\Models\User;
 use App\Models\Ticket;
 use App\Models\Contact;
 use App\Models\Query;
+use App\Models\Attendance;
+use App\Models\LeaveRequest;
 
 class UserController extends Controller
 {
-    public function loginPage()
+    
+    
+    public function dashboard()
     {
-        return view('login');
+        return view('user.dashboard'); // No need to pass data
     }
-
-    public function signupPage()
-    {
-        return view('signup');
-    }
-
     public function signup(Request $request)
     {
         $request->validate([
@@ -94,6 +92,12 @@ class UserController extends Controller
         return view('user.profile', compact('user'));
     }
 
+    public function editProfile()
+    {
+        $user = Auth::user();
+        return view('user.edit-profile', compact('user'));
+    }
+
     public function createTicketPage()
     {
         return view('user.create-ticket');
@@ -146,5 +150,33 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Your message has been sent successfully.');
 
     }
+
+    public function createLeavePage()
+    {
+        return view('user.create-leave');
+    }   
+    public function createLeave(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+            'reason'     => 'required|string|max:1000',
+        ]);
+
+        $leaveRequest = new LeaveRequest();
+        $leaveRequest->user_id = Auth::id();
+        $leaveRequest->start_date = $request->start_date;
+        $leaveRequest->end_date = $request->end_date;
+        $leaveRequest->reason = $request->reason;
+
+        $leaveRequest->save();
+
+        return redirect()->route('user.view-leaves')->with('success', 'Leave request created successfully.');
+    }   
+    public function viewLeaves()
+    {
+        $leaves = LeaveRequest::where('user_id', Auth::id())->get();
+        return view('user.view-leaves', compact('leaves')); 
+    }        
 
 }

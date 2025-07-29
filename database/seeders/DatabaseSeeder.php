@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             // QuerySeeder::class,
             // ContactSeeder::class,
             // UserSeeder::class,
+            DummyDataSeeder::class,
         ]);
     }
 }

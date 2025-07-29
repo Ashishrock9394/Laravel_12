@@ -13,10 +13,10 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 // Guest Routes
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [UserController::class, 'loginPage'])->name('login');
+    Route::get('/login', [HomeController::class, 'loginPage'])->name('login');
+    Route::get('/signup', [HomeController::class, 'signupPage'])->name('register');
+    // Login and Signup Form Submission
     Route::post('/login', [UserController::class, 'login'])->name('login.submit');
-
-    Route::get('/signup', [UserController::class, 'signupPage'])->name('register');
     Route::post('/signup', [UserController::class, 'signup'])->name('register.submit');
 });
 
@@ -26,14 +26,21 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
     // user routes 
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
     Route::get('/profile', [UserController::class, 'userProfile'])->name('user.profile');
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::post('/contactForm',[UserController::class, 'contactStore'])->name('contact.store');
     Route::get('/create-ticket', [UserController::class, 'createTicketPage'])->name('user.create-ticket');
     Route::post('/create-ticket', [UserController::class, 'createTicket'])->name('user.create-ticket');
     Route::get('/view-tickets', [UserController::class, 'viewTickets'])->name('user.view-tickets');
     Route::get('/notifications/fetch', [NotificationController::class, 'fetch'])->name('notifications.fetch');
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+    // Attendance and Leave Routes
+    Route::get('/create-leave', [UserController::class, 'createLeavePage'])->name('user.create-leave');
+    Route::post('/create-leave', [UserController::class, 'createLeave'])->name('user.create-leave');
+    Route::get('/view-leaves', [UserController::class, 'viewLeaves'])->name('user.view-leaves');
 
 
     // Admin routes
