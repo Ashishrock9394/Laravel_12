@@ -63,8 +63,9 @@ class UserController extends Controller
             return $this->redirectByUserType(Auth::user()->user_type, 'login');
         }
 
-        return back()->with('error', 'Invalid email or password')->withInput();
-
+        return back()
+            ->withErrors(['email' => 'Invalid email or password'])
+            ->withInput();
     }
 
     public function logout(Request $request)
@@ -86,6 +87,7 @@ class UserController extends Controller
             default      => redirect()->route('user.dashboard')->with('success', $message),
         };
     }
+
     public function userProfile()
     {
         $user = Auth::user();

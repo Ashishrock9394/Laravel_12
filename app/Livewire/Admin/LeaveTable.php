@@ -24,9 +24,9 @@ class LeaveTable extends Component
             // ✅ Send notification to the ticket owner
             $leaveRequest->user->notify(new LeaveRequestApproved($leaveRequest));
             // ✅ Livewire browser event for feedback
-            $this->dispatch('swal:success', message: 'Ticket status updated successfully.');
+            $this->dispatch('swal:success', message: 'Status updated successfully.');
         } else {
-            $this->dispatch('swal:error', message: 'Ticket not found.');
+            $this->dispatch('swal:error', message: 'Request not found.');
         }
     }   
 
