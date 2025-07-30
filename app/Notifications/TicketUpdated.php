@@ -33,10 +33,12 @@ class TicketUpdated extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
+            'type' => 'ticket',
             'ticket_id' => $this->ticket->id,
             'title' => $this->ticket->title,
             'status' => $this->ticket->status,
-            'message' => "updated.",
+            'message' => "Your ticket '{$this->ticket->title}' has been updated to '{$this->ticket->status}'.",
+            'updated_by' => auth()->user()->name,
         ];
     }
 }

@@ -43,6 +43,20 @@
                         <a href="{{ route('admin.tickets.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
+                
+                <!-- Leave Requests -->
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{ $leaveCount }}</h3>
+                            <p>Leave Requests</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-address-book"></i>
+                        </div>
+                        <a href="{{ route('admin.leave-requests.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
 
                 <!-- Queries -->
                 <div class="col-lg-3 col-6">

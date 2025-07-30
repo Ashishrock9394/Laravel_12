@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Styles -->
+     <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
@@ -28,6 +31,9 @@
 
     <!-- Scripts -->
     @livewireScripts
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
+
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="https://kit.fontawesome.com/591c524be6.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
@@ -36,45 +42,48 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        // CSRF for all AJAX requests
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        // Notification Polling
-        function fetchNotifications() {
-            $.get("{{ route('notifications.fetch') }}").done(function (data) {
-                let list = '';
-                if (data.notifications.length > 0) {
-                    $('#notification-count').text(data.count).show();
-                    data.notifications.forEach(n => {
-                        list += `<li>
-                            <a class="dropdown-item" href="/tickets/${n.data.ticket_id}" onclick="markNotificationsRead()">
-                                Your ticket id: ${n.data.ticket_id} has been ${n.data.message}
-                            </a>
-                        </li>`;
-                    });
-                } else {
-                    $('#notification-count').hide();
-                    list = '<li><span class="dropdown-item">No new notifications</span></li>';
-                }
-                $('#notification-list').html(list);
-            }).fail(function (xhr) {
-                console.error("Notification fetch failed:", xhr.responseText);
-            });
+    // CSRF for all AJAX requests
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
+    });
 
-        function markNotificationsRead() {
-            $.post("{{ route('notifications.markAsRead') }}", {}, function () {
+    // Notification Polling
+    function fetchNotifications() {
+        $.get("{{ route('notifications.fetch') }}").done(function (data) {
+            let list = '';
+            if (data.notifications.length > 0) {
+                $('#notification-count').text(data.count).show();
+
+                data.notifications.forEach(n => {
+                    list += `<li>
+                        <a class="dropdown-item" href="/notifications/read/${n.id}">
+                            🔔 ${n.data.message}
+                        </a>
+                    </li>`;
+                });
+            } else {
                 $('#notification-count').hide();
-            });
-        }
+                list = '<li><span class="dropdown-item">No new notifications</span></li>';
+            }
+            $('#notification-list').html(list);
+        }).fail(function (xhr) {
+            console.error("Notification fetch failed:", xhr.responseText);
+        });
+    }
 
-        setInterval(fetchNotifications, 10000);
-        fetchNotifications();
-    </script>
+    // (Optional) Manual mark as read — not used anymore in dropdown clicks
+    function markNotificationsRead() {
+        $.get("{{ route('notifications.markAsRead') }}", function () {
+            $('#notification-count').hide();
+        });
+    }
+
+    setInterval(fetchNotifications, 10000); // Fetch every 10 seconds
+    fetchNotifications(); // Initial fetch
+</script>
+
 
     <script>
         // Logout confirmation

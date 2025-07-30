@@ -35,7 +35,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/create-ticket', [UserController::class, 'createTicket'])->name('user.create-ticket');
     Route::get('/view-tickets', [UserController::class, 'viewTickets'])->name('user.view-tickets');
     Route::get('/notifications/fetch', [NotificationController::class, 'fetch'])->name('notifications.fetch');
-    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::get('/notifications/mark-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::get('/notifications/read/{id}', [NotificationController::class, 'markSingleAsRead'])->name('notifications.read');
+
 
     // Attendance and Leave Routes
     Route::get('/create-leave', [UserController::class, 'createLeavePage'])->name('user.create-leave');
@@ -50,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/tickets', [AdminController::class, 'tickets'])->name('tickets.index');
         Route::get('/queries', [AdminController::class, 'queries'])->name('queries.index');
         Route::get('/contacts', [AdminController::class, 'contacts'])->name('contacts.index');
+        Route::get('/leave-requests', [AdminController::class, 'leaveRequests'])->name('leave-requests.index');
     });
 
     // Superadmin routes

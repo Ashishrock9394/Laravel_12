@@ -18,6 +18,12 @@
                         </a>
                   </li>
                   <li class="nav-item">
+                        <a href="{{ route('admin.leave-requests.index') }}" class="nav-link {{ request()->is('admin/leave-requests*') ? 'active' : '' }}">
+                              <i class="nav-icon fas fa-ticket-alt"></i>
+                              <p>Leave Requests</p>
+                        </a>
+                  </li> 
+                  <li class="nav-item">
                         <a href="{{ route('admin.tickets.index') }}" class="nav-link {{ request()->is('admin/tickets*') ? 'active' : '' }}">
                               <i class="nav-icon fas fa-ticket-alt"></i>
                               <p>Tickets</p>

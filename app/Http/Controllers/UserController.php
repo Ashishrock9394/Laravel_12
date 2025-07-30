@@ -175,7 +175,7 @@ class UserController extends Controller
     }   
     public function viewLeaves()
     {
-        $leaves = LeaveRequest::where('user_id', Auth::id())->get();
+        $leaves = LeaveRequest::where('user_id', Auth::id())->latest()->get();
         return view('user.view-leaves', compact('leaves')); 
     }        
 
