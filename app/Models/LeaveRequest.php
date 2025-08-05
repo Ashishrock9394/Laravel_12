@@ -12,6 +12,10 @@ class LeaveRequest extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'date', 'reason', 'status'];
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
 
     public function user()
     {

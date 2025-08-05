@@ -43,5 +43,8 @@
            
         </table>
     </div>
+    <div class="mt-3">
+        {{ $leaves->links('pagination::bootstrap-4') }}
+    </div>
 
 </div>

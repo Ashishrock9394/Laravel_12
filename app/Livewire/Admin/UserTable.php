@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\User;
+use Livewire\WithPagination;
+use Livewire\Component;
 
 class UserTable extends Component
 {
@@ -12,9 +12,8 @@ class UserTable extends Component
 
     public $search = '';
 
-    protected $updatesQueryString = ['search']; // Optional: enables URL query string
+    protected $queryString = ['search'];
 
-    // Reset pagination when search term updates
     public function updatedSearch()
     {
         $this->resetPage();
@@ -22,19 +21,23 @@ class UserTable extends Component
 
     public function render()
     {
-        $query = User::where('parent_id', auth()->id());
+        $users = User::where('parent_id', auth()->id())
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('name', 'like', '%' . $this->search . '%')
+                      ->orWhere('email', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        if (!empty($this->search)) {
-            $query->where(function ($subquery) {
-                $subquery->where('name', 'like', '%' . $this->search . '%')
-                         ->orWhere('email', 'like', '%' . $this->search . '%');
-            });
-        }
-
-        $users = $query->orderBy('created_at', 'desc')->paginate(10);
-
-        return view('livewire.admin.user-table', [
-            'users' => $users,
-        ]);
+        return view('livewire.admin.user-table', compact('users'));
     }
+
+    public function getColorForUser($userId)
+    {
+        $colors = ['text-primary', 'text-success', 'text-danger', 'text-warning', 'text-info', 'text-secondary', 'text-dark'];
+        return $colors[$userId % count($colors)];
+    }
+
 }

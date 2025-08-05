@@ -47,5 +47,8 @@
            
         </table>
     </div>
+    <div class="mt-3">
+        {{ $tickets->links('pagination::bootstrap-4') }}
+    </div>
 
 </div>

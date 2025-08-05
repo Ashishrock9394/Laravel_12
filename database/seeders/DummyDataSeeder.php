@@ -16,14 +16,16 @@ class DummyDataSeeder extends Seeder
     public function run(): void
     {
         // Make sure you have some users
-        if (User::count() < 10) {
-            User::factory()->count(10)->create();
-        }
+        // if (User::count() < 10) {
+        //     User::factory()->count(10)->create();
+        // }
 
+
+        // User::factory()->count(10000)->create();
         // Seed 500 attendance records
-        Attendance::factory()->count(500)->create();
+        // Attendance::factory()->count(500)->create();
 
-        // Seed 100 leave requests
-        LeaveRequest::factory()->count(100)->create();
+        // // Seed 100 leave requests
+        // LeaveRequest::factory()->count(100)->create();
     }
 }

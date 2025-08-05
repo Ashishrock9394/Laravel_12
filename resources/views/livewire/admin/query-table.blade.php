@@ -31,4 +31,7 @@
             </tbody>
         </table>
     </div>
+    <div class="mt-3">
+        {{ $queries->links('pagination::bootstrap-4') }}
+    </div>
 </div>

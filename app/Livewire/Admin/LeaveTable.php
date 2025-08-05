@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\LeaveRequest;
 use App\Models\User;
+use App\Models\Attendance;
 use App\Notifications\LeaveRequestApproved;
 
 class LeaveTable extends Component
@@ -17,18 +18,32 @@ class LeaveTable extends Component
     public function updateStatus($leaveId, $status)
     {
         $leaveRequest = LeaveRequest::find($leaveId);
+
         if ($leaveRequest) {
             $leaveRequest->status = $status;
+
+            if ($status === 'approved') {
+                $startDate = $leaveRequest->start_date; // Automatically a Carbon instance
+                $endDate = $leaveRequest->end_date;
+
+                for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+                    Attendance::create([
+                        'user_id' => $leaveRequest->user_id,
+                        'date' => $date->toDateString(),
+                        'status' => 'leave',
+                    ]);
+                }
+            }
+
             $leaveRequest->save();
 
-            // ✅ Send notification to the ticket owner
             $leaveRequest->user->notify(new LeaveRequestApproved($leaveRequest));
-            // ✅ Livewire browser event for feedback
             $this->dispatch('swal:success', message: 'Status updated successfully.');
         } else {
             $this->dispatch('swal:error', message: 'Request not found.');
         }
-    }   
+    }
+  
 
 
 

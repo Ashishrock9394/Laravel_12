@@ -29,5 +29,8 @@
            
         </table>
     </div>
+    <div class="mt-3">
+        {{ $contacts->links('pagination::bootstrap-4') }}
+    </div>
 
 </div>
